@@ -1,0 +1,60 @@
+﻿@page "/empleados/details"
+@using Dalton.Services
+@using Dalton.Models
+@inject MyApiService apiService
+@inject HttpClient httpClient
+
+<h3>Detalles del Empleado</h3>
+
+@if (empleado == null)
+{
+    <p>Cargando detalles del empleado...</p>
+}
+else
+{
+    <dl>
+        <dt>Empleado ID:</dt>
+        <dd>@empleado.BintEmpleadoKey</dd>
+        <dt>Persona Link:</dt>
+        <dd>@empleado.BintPersonaLink</dd>
+        <dt>Proveedor Link:</dt>
+        <dd>@empleado.BintIdProveedorLink</dd>
+        <dt>Plaza Link:</dt>
+        <dd>@empleado.BintPlazaLink</dd>
+        <dt>Material Link:</dt>
+        <dd>@empleado.BintMaterialLink</dd>
+        <dt>Fecha Ingreso:</dt>
+        <dd>@empleado.DtFechaIngreso.ToShortDateString()</dd>
+        <dt>Fecha Baja:</dt>
+        <dd>@empleado.DtFechaBaja?.ToShortDateString()</dd>
+        <dt>Foto:</dt>
+        <dd>@empleado.VchFoto</dd>
+        <dt>Activo:</dt>
+        <dd>@(empleado.BitActivo ? "Activo" : "Inactivo")</dd>
+    </dl>
+}
+
+@code {
+    private Empleado empleado;
+
+    [Parameter]
+    public long Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        empleado = await apiService.GetByIdAsync<Empleado>("api/empleados", Id);
+    }
+
+    public class Empleado
+    {
+        public long BintEmpleadoKey { get; set; }
+        public long BintPersonaLink { get; set; }
+        public long BintIdProveedorLink { get; set; }
+        public long BintPlazaLink { get; set; }
+        public long BintMaterialLink { get; set; }
+        public DateTime DtFechaIngreso { get; set; }
+        public DateTime? DtFechaBaja { get; set; }
+        public string VchFoto { get; set; }
+        public bool BitActivo { get; set; }
+    }
+}

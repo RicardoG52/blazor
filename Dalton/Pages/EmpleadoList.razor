@@ -1,0 +1,73 @@
+﻿@page "/empleados/mostrar"
+@using Dalton.Services
+@using Dalton.Models
+@inject MyApiService apiService
+@inject HttpClient httpClient
+
+
+<h3>Lista de Empleados</h3>
+
+@if (empleados == null)
+{
+    <p>Cargando empleados...</p>
+}
+else if (empleados.Count == 0)
+{
+    <p>No se encontraron empleados.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Empleado ID</th>
+                <th>Persona Link</th>
+                <th>Proveedor Link</th>
+                <th>Plaza Link</th>
+                <th>Material Link</th>
+                <th>Fecha Ingreso</th>
+                <th>Fecha Baja</th>
+                <th>Foto</th>
+                <th>Activo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var empleado in empleados)
+            {
+                <tr>
+                    <td>@empleado.BintEmpleadoKey</td>
+                    <td>@empleado.BintPersonaLink</td>
+                    <td>@empleado.BintIdProveedorLink</td>
+                    <td>@empleado.BintPlazaLink</td>
+                    <td>@empleado.BintMaterialLink</td>
+                    <td>@empleado.DtFechaIngreso.ToShortDateString()</td>
+                    <td>@empleado.DtFechaBaja?.ToShortDateString()</td>
+                    <td>@empleado.VchFoto</td>
+                    <td>@(empleado.BitActivo ? "Activo" : "Inactivo")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Empleado> empleados;
+
+    protected override async Task OnInitializedAsync()
+    {
+        empleados = await apiService.GetAsync<List<Empleado>>("api/empleados");
+    }
+
+    public class Empleado
+    {
+        public long BintEmpleadoKey { get; set; }
+        public long BintPersonaLink { get; set; }
+        public long BintIdProveedorLink { get; set; }
+        public long BintPlazaLink { get; set; }
+        public long BintMaterialLink { get; set; }
+        public DateTime DtFechaIngreso { get; set; }
+        public DateTime? DtFechaBaja { get; set; }
+        public string VchFoto { get; set; }
+        public bool BitActivo { get; set; }
+    }
+}

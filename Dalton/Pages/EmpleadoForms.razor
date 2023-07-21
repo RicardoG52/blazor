@@ -1,0 +1,69 @@
+﻿@page "/empleados/crear"
+@using Dalton.Services
+@using Dalton.Models
+@inject NavigationManager navigationManager
+@inject Dalton.Services.MyApiService apiService
+@inject MyApiService apiService
+@inject HttpClient httpClient
+
+<h3>Formulario de Empleado</h3>
+
+<form>
+    <div class="form-group">
+        <label for="personaLink">Id Persona</label>
+        <input type="text" class="form-control" id="IdPersona" @bind="@empleado.BintPersonaLink" />
+    </div>
+    <div class="form-group">
+        <label for="proveedorLink">Id Proveedor</label>
+        <input type="text" class="form-control" id="IdProveedor" @bind="@empleado.BintIdProveedorLink" />
+    </div>
+    <div class="form-group">
+        <label for="plazaLink">Id Plaza</label>
+        <input type="text" class="form-control" id="IdPlaza" @bind="@empleado.BintPlazaLink" />
+    </div>
+    <div class="form-group">
+        <label for="materialLink">Id Material</label>
+        <input type="text" class="form-control" id="IdMaterial" @bind="@empleado.BintMaterialLink" />
+    </div>
+    <div class="form-group">
+        <label for="fechaIngreso">Fecha Ingreso</label>
+        <input type="date" class="form-control" id="fechaIngreso" @bind="@empleado.DtFechaIngreso" />
+    </div>
+    <div class="form-group">
+        <label for="fechaBaja">Fecha Baja</label>
+        <input type="date" class="form-control" id="fechaBaja" @bind="@empleado.DtFechaBaja" />
+    </div>
+    <div class="form-group">
+        <label for="foto">Foto</label>
+        <input type="text" class="form-control" id="foto" @bind="@empleado.VchFoto" />
+    </div>
+    <div class="form-group">
+        <label for="activo">Activo</label>
+        <input type="checkbox" class="form-control" id="activo" @bind="@empleado.BitActivo" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" @onclick="GuardarEmpleado">Guardar</button>
+</form>
+
+@code {
+    private Empleado empleado = new Empleado();
+
+    private async Task GuardarEmpleado()
+    {
+        await apiService.PostAsync<Empleado>("api/empleados", empleado);
+        navigationManager.NavigateTo("/empleados");
+    }
+
+    public class Empleado
+    {
+        public long BintEmpleadoKey { get; set; }
+        public long BintPersonaLink { get; set; }
+        public long BintIdProveedorLink { get; set; }
+        public long BintPlazaLink { get; set; }
+        public long BintMaterialLink { get; set; }
+        public DateTime DtFechaIngreso { get; set; }
+        public DateTime? DtFechaBaja { get; set; }
+        public string VchFoto { get; set; }
+        public bool BitActivo { get; set; }
+    }
+}
