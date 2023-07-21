@@ -1,12 +1,7 @@
-﻿using System;
-using Dalton.Models;
-using System.Net.Http;
+﻿using Dalton.Models;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dalton.Services
 {
@@ -24,14 +19,14 @@ namespace Dalton.Services
 
         public async Task<T> GetAsync<T>(string url)
         {
-            var response = await _httpClient.GetAsync(_apiSettings.BaseUrl + url);
+            var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>();
         }
 
         public async Task<T> GetByIdAsync<T>(string url, long Id)
         {
-            var response = await _httpClient.GetAsync(_apiSettings.BaseUrl + url);
+            var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>();
         }

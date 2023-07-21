@@ -1,6 +1,4 @@
 using Dalton;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Dalton.Models;
 using Dalton.Services;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,7 +14,7 @@ var apiSettings = new ApiSettings();
 builder.Configuration.GetSection("ApiSettings").Bind(apiSettings);
 builder.Services.AddSingleton(apiSettings);
 
-builder.Services.AddScoped<MyApiService>(); // Registro del servicio aquí
+builder.Services.AddScoped<MyApiService>(); // Registro del servicio aquï¿½
 
 builder.Services.AddScoped(sp =>
 {

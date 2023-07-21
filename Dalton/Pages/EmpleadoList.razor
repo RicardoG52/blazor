@@ -1,9 +1,7 @@
 ﻿@page "/empleados/mostrar"
-@using Dalton.Services
-@using Dalton.Models
 @inject MyApiService apiService
 @inject HttpClient httpClient
-
+@inject IConfiguration Configuration
 
 <h3>Lista de Empleados</h3>
 
@@ -32,7 +30,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var empleado in empleados)
+            @foreach (Empleado empleado in empleados)
             {
                 <tr>
                     <td>@empleado.BintEmpleadoKey</td>
@@ -55,7 +53,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        empleados = await apiService.GetAsync<List<Empleado>>("api/empleados");
+        empleados = await apiService.GetAsync<List<Empleado>>(Configuration["ApiSettings:BaseUrl"] + "/api/empleados");
     }
 
     public class Empleado
